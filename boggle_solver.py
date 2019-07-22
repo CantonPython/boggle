@@ -29,8 +29,9 @@ class BoggleSolver:
             for word in f:
                 self.dictionary.append(word.strip())
 
-    def _build_index(self, board):
+    def build_index(self, board):
         """Generate the index table for find_word."""
+        assert len(board) == len(ADJACENT)
         self.index = {}
         for letter in string.ascii_lowercase:
             self.index[letter] = []
@@ -42,12 +43,12 @@ class BoggleSolver:
         first = word[0]
         rest = word[1:]
         for i in self.index[first]:
-            found = self._find_subword([i], rest)
+            found = self.find_subword([i], rest)
             if found:
                 return found
         return None
 
-    def _find_subword(self, path, word):
+    def find_subword(self, path, word):
         """Find the remaining letters of a word on the board."""
         if not word:
             return path
@@ -57,14 +58,14 @@ class BoggleSolver:
         adjacent = ADJACENT[tail]
         for i in self.index[first]:
             if i in adjacent and i not in path:
-                found = self._find_subword(path+[i], rest)
+                found = self.find_subword(path+[i], rest)
                 if found:
                     return found
         return None
 
     def solve(self, board):
         """Find all the words on the board."""
-        self._build_index(board)
+        self.build_index(board)
         self.solution = {}
         for word in self.dictionary:
             word = word.strip()
@@ -81,14 +82,26 @@ class BoggleSolver:
 
 def main():
     """Test driver for the boggle game solver."""
-    boggle = BoggleSolver('boggle_words.txt')
 
-    board = 'bpsrtsbevdjwcesy'
-    boggle.solve(board)
+    from pprint import pprint
+    board = \
+        'catx' \
+        'xxnx' \
+        'xxua' \
+        'xxxx'
 
-    print('board', board)
-    for word in boggle.found():
-        print(word, boggle.path_found(word))
+    solver = BoggleSolver('boggle_words.txt')
+    solver.build_index(board)
+    print('index')
+    pprint(solver.index)
+
+    path = solver.find_word('cat')
+    print('path')
+    pprint(path)
+
+    solver.solve(board)
+    print('solution')
+    pprint(solver.solution)
 
 if __name__ == '__main__':
     main()
