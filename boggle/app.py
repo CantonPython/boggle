@@ -109,21 +109,21 @@ class BoggleApp(tk.Frame):
     def solve(self):
         if not self.running:
             return
+        self.running = False
         self.button_action.configure(text='Shake!', command=self.shake)
-        self.solver.solve(self.letters)
-        solution = set(self.solver.found())
 
+        solution = self.solver.solve(self.letters)
+        solution = set(solution.keys())
         words = set(self.words)
+
         found = words & solution
         missed = solution - words
 
-        found_text = 'Found:\n' + ' '.join(list(found))
-        missed_text = 'Missed:\n' + ' '.join(list(missed))
+        found_text = 'Found:\n' + ' '.join(sorted(list(found)))
+        missed_text = 'Missed:\n' + ' '.join(sorted(list(missed)))
 
         self.var_found.set(found_text)
         self.var_missed.set(missed_text)
-
-        self.running = False
 
 
 def main():

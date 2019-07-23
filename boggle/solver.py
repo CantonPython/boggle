@@ -74,12 +74,6 @@ class BoggleSolver:
                 self.solution[word] = tuple(path)
         return self.solution
 
-    def found(self):
-        return list(self.solution.keys())
-
-    def path_found(self, word):
-        return self.solution[word]
-
 def main():
     """Test driver for the boggle game solver."""
 
