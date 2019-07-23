@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 
+import os
 import tkinter as tk
-from boggle_dice import BoggleDice
-from boggle_solver import BoggleSolver
+from boggle.dice import BoggleDice
+from boggle.solver import BoggleSolver
 
 class BoggleApp(tk.Frame):
     def __init__(self, root):
@@ -11,7 +12,7 @@ class BoggleApp(tk.Frame):
         self.rows = 4
         self.cols = 4
         self.dice = BoggleDice()
-        self.solver = BoggleSolver('boggle_words.txt')
+        self.solver = BoggleSolver(os.path.expanduser('~/.boggle/words.txt'))
         self.words = []
         self.running = False
 
