@@ -27,7 +27,7 @@ class BoggleApp(tk.Frame):
         self.panel = self.create_panel_widgets()
 
         self.canvas.grid(row=0, column=0, padx=10, pady=10)
-        self.panel.grid(row=0, column=1, padx=10, pady=10, sticky=tk.N)
+        self.panel.grid(row=0, column=1, padx=10, pady=10, sticky='n')
 
     def create_panel_widgets(self):
         self.var_word = tk.StringVar()
@@ -43,17 +43,17 @@ class BoggleApp(tk.Frame):
         button_ok = tk.Button(panel, text='Ok')
         self.root.bind('<Return>', self.add_word)
         button_ok.bind('<Button-1>', self.add_word)
-        message_words = tk.Message(panel, width=280, textvariable=self.var_words)
-        message_found = tk.Message(panel, width=280, textvariable=self.var_found)
-        message_missed = tk.Message(panel, width=280, textvariable=self.var_missed)
+        message_words = tk.Message(panel, width=280, anchor='w', textvariable=self.var_words)
+        message_found = tk.Message(panel, width=280, anchor='w', textvariable=self.var_found)
+        message_missed = tk.Message(panel, width=280, anchor='w', textvariable=self.var_missed)
 
         button_action.grid(row=0, column=0)
         button_quit.grid(row=0, column=1)
         entry_word.grid(row=2, column=0)
         button_ok.grid(row=2, column=1)
-        message_words.grid(row=5)
-        message_found.grid(row=6)
-        message_missed.grid(row=7)
+        message_words.grid(row=3, sticky='w')
+        message_found.grid(row=4, sticky='w')
+        message_missed.grid(row=5, sticky='w')
 
         return panel
 
