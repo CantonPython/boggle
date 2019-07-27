@@ -40,9 +40,8 @@ class BoggleApp(tk.Frame):
         self.button_action = button_action # toggles
         button_quit = tk.Button(panel, command=self.quit, text='Quit')
         entry_word = tk.Entry(panel, width=32, textvariable=self.var_word)
-        button_ok = tk.Button(panel, text='Ok')
+        button_ok = tk.Button(panel, command=self.add_word, text='Ok')
         self.root.bind('<Return>', self.add_word)
-        button_ok.bind('<Button-1>', self.add_word)
         message_words = tk.Message(panel, width=280, anchor='w', textvariable=self.var_words)
         message_found = tk.Message(panel, width=280, anchor='w', textvariable=self.var_found)
         message_missed = tk.Message(panel, width=280, anchor='w', textvariable=self.var_missed)
@@ -97,7 +96,7 @@ class BoggleApp(tk.Frame):
         self.paint_canvas(self.letters)
         self.running = True
 
-    def add_word(self, event):
+    def add_word(self, event=None):
         if not self.running:
             return
         word = self.var_word.get().strip()
