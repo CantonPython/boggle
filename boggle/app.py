@@ -49,6 +49,8 @@ class BoggleApp(tk.Frame):
         message.grid(row=3, columnspan=2, stick='w')
         button_quit.grid(row=6, column=1)
 
+        entry_word.focus_set()
+
         return panel
 
     def paint_canvas(self, path=None):
@@ -106,6 +108,7 @@ class BoggleApp(tk.Frame):
         if word in self.solution:
             self.paint_canvas(self.solution[word])
         self.var_word.set('')
+        self.root.after(2000, self.paint_canvas)
 
     def solve(self):
         if not self.running:
