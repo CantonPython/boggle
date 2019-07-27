@@ -31,28 +31,22 @@ class BoggleApp(tk.Frame):
 
     def create_panel_widgets(self):
         self.var_word = tk.StringVar()
-        self.var_words = tk.StringVar()
-        self.var_found = tk.StringVar()
-        self.var_missed = tk.StringVar()
+        self.var_message = tk.StringVar()
 
         panel = tk.Frame(self)
         button_action = tk.Button(panel, command=self.shake, text='Shake!')
         self.button_action = button_action # toggles
-        button_quit = tk.Button(panel, command=self.quit, text='Quit')
         entry_word = tk.Entry(panel, width=32, textvariable=self.var_word)
         button_ok = tk.Button(panel, command=self.add_word, text='Ok')
         self.root.bind('<Return>', self.add_word)
-        message_words = tk.Message(panel, width=280, anchor='w', textvariable=self.var_words)
-        message_found = tk.Message(panel, width=280, anchor='w', textvariable=self.var_found)
-        message_missed = tk.Message(panel, width=280, anchor='w', textvariable=self.var_missed)
+        message = tk.Message(panel, width=280, anchor='w', textvariable=self.var_message)
+        button_quit = tk.Button(panel, command=self.quit, text='Quit')
 
-        button_action.grid(row=0, column=0)
-        button_quit.grid(row=0, column=1)
+        button_action.grid(row=0, column=0, sticky='w')
         entry_word.grid(row=2, column=0)
         button_ok.grid(row=2, column=1)
-        message_words.grid(row=3, sticky='w')
-        message_found.grid(row=4, sticky='w')
-        message_missed.grid(row=5, sticky='w')
+        message.grid(row=3, columnspan=2, stick='w')
+        button_quit.grid(row=6, column=1)
 
         return panel
 
@@ -84,9 +78,7 @@ class BoggleApp(tk.Frame):
 
     def clear(self):
         self.var_word.set('')
-        self.var_words.set('')
-        self.var_found.set('')
-        self.var_missed.set('')
+        self.var_message.set('')
         self.words = []
 
     def shake(self):
@@ -103,7 +95,7 @@ class BoggleApp(tk.Frame):
         self.var_word.set('')
         if len(word) > 2 and word not in self.words:
             self.words.append(word)
-            self.var_words.set(' '.join(self.words))
+            self.var_message.set('You entered:\n' + ' '.join(self.words))
 
     def solve(self):
         if not self.running:
@@ -118,11 +110,10 @@ class BoggleApp(tk.Frame):
         found = words & solution
         missed = solution - words
 
-        found_text = 'Found:\n' + ' '.join(sorted(list(found)))
-        missed_text = 'Missed:\n' + ' '.join(sorted(list(missed)))
+        found_text = 'You found:\n' + ' '.join(sorted(list(found)))
+        missed_text = 'You missed:\n' + ' '.join(sorted(list(missed)))
 
-        self.var_found.set(found_text)
-        self.var_missed.set(missed_text)
+        self.var_message.set(found_text + '\n\n' + missed_text)
 
 
 def main():
