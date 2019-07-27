@@ -14,6 +14,7 @@ class BoggleApp(tk.Frame):
         self.dice = BoggleDice()
         self.solver = BoggleSolver(os.path.expanduser('~/.boggle/words.txt'))
         self.words = []
+        self.letters = []
         self.running = False
 
         self.root = root
@@ -50,13 +51,15 @@ class BoggleApp(tk.Frame):
 
         return panel
 
-    def paint_canvas(self, letters=''):
+    def paint_canvas(self, path=None):
+        if path is None:
+            path = []
         MARGIN = 64
         PAD = 10
         WIDTH = 80
         HEIGHT = 80
-        COLOR = 'white'
         FONT = ('Times', 18)
+
         for row in range(self.rows):
             for col in range(self.cols):
                 y0 = MARGIN + (row * (WIDTH + PAD))
@@ -67,11 +70,15 @@ class BoggleApp(tk.Frame):
                 x2 = x0 + (HEIGHT/2)
                 i = (row  * self.rows) + col
                 try:
-                    ch = letters[i].upper()
+                    ch = self.letters[i].upper()
                 except IndexError:
                     ch = ''
-                self.canvas.create_rectangle(x0, y0, x1, y1, fill=COLOR)
-                self.canvas.create_text(x2, y2, font=FONT, text=ch)
+                if i in path:
+                    fg,bg = 'white','blue'
+                else:
+                    fg,bg = 'black','white'
+                self.canvas.create_rectangle(x0, y0, x1, y1, fill=bg)
+                self.canvas.create_text(x2, y2, font=FONT, text=ch, fill=fg)
 
     def quit(self):
         self.root.destroy()
@@ -80,22 +87,25 @@ class BoggleApp(tk.Frame):
         self.var_word.set('')
         self.var_message.set('')
         self.words = []
+        self.solution = None
 
     def shake(self):
         self.button_action.configure(text='Solve', command=self.solve)
         self.clear()
         self.letters = self.dice.shake()
-        self.paint_canvas(self.letters)
+        self.paint_canvas()
         self.running = True
+        self.solution = self.solver.solve(self.letters)
 
     def add_word(self, event=None):
-        if not self.running:
-            return
         word = self.var_word.get().strip()
+        if self.running:
+            if len(word) > 2 and word not in self.words:
+                self.words.append(word)
+                self.var_message.set('You entered:\n' + ' '.join(self.words))
+        if word in self.solution:
+            self.paint_canvas(self.solution[word])
         self.var_word.set('')
-        if len(word) > 2 and word not in self.words:
-            self.words.append(word)
-            self.var_message.set('You entered:\n' + ' '.join(self.words))
 
     def solve(self):
         if not self.running:
@@ -103,12 +113,11 @@ class BoggleApp(tk.Frame):
         self.running = False
         self.button_action.configure(text='Shake!', command=self.shake)
 
-        solution = self.solver.solve(self.letters)
-        solution = set(solution.keys())
-        words = set(self.words)
+        solution_words = set(self.solution.keys())
+        entered_words = set(self.words)
 
-        found = words & solution
-        missed = solution - words
+        found = solution_words & entered_words
+        missed = solution_words - entered_words
 
         found_text = 'You found:\n' + ' '.join(sorted(list(found)))
         missed_text = 'You missed:\n' + ' '.join(sorted(list(missed)))
