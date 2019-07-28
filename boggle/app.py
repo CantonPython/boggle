@@ -1,9 +1,42 @@
 #!/usr/bin/python3
 
 import os
+import time
 import tkinter as tk
 from boggle.dice import BoggleDice
 from boggle.solver import BoggleSolver
+
+class BoggleTimer(tk.Label):
+    def __init__(self, parent):
+        self.var_countdown = tk.StringVar()
+        super().__init__(parent, width=6, textvariable=self.var_countdown)
+        self.running = False
+
+    def start(self, seconds, callback):
+        if self.running:
+            return
+        self.update(seconds)
+        now = time.time()
+        self.expired = now + seconds
+        self.callback = callback
+        self.after(1000, self.tick)
+        self.running = True
+
+    def update(self, remaining):
+        minutes = int(remaining / 60.0)
+        seconds = int(remaining % 60.0)
+        self.var_countdown.set('%d:%02d' % (minutes, seconds))
+
+    def tick(self):
+        now = time.time()
+        remaining = self.expired - now
+        self.update(remaining)
+        if remaining > 0:
+            self.after(1000, self.tick)
+        else:
+            self.running = False
+            self.callback()
+
 
 class BoggleApp(tk.Frame):
     def __init__(self, root):
@@ -35,15 +68,16 @@ class BoggleApp(tk.Frame):
         self.var_message = tk.StringVar()
 
         panel = tk.Frame(self)
-        button_action = tk.Button(panel, command=self.shake, text='Shake!')
-        self.button_action = button_action # toggles
+        self.button_action = tk.Button(panel, command=self.shake, text='Shake!')
+        self.timer = BoggleTimer(panel)
         entry_word = tk.Entry(panel, width=32, textvariable=self.var_word)
         button_ok = tk.Button(panel, command=self.add_word, text='Ok')
         self.root.bind('<Return>', self.add_word)
         message = tk.Message(panel, width=280, anchor='w', textvariable=self.var_message)
         button_quit = tk.Button(panel, command=self.quit, text='Quit')
 
-        button_action.grid(row=0, column=0, sticky='w')
+        self.button_action.grid(row=0, column=0, sticky='w')
+        self.timer.grid(row=0, column=1)
         entry_word.grid(row=2, column=0)
         button_ok.grid(row=2, column=1)
         message.grid(row=3, columnspan=2, stick='w')
@@ -98,6 +132,7 @@ class BoggleApp(tk.Frame):
         self.paint_canvas()
         self.running = True
         self.solution = self.solver.solve(self.letters)
+        self.timer.start(180, self.solve)
 
     def add_word(self, event=None):
         word = self.var_word.get().strip()
