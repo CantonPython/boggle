@@ -7,10 +7,8 @@ purposes.  Players try to find words in a 4 by 4 grid of random letters.
 
 ## Todo
 
-* Scoring, based on word length
-* Improved UI
-* Game timer
 * Different size boards
+* Q implies Qu (two letters on on die)
 
 Future enhancements could include multiple player support over the network.
 

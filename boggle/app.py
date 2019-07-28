@@ -29,11 +29,12 @@ class BoggleTimer(tk.Label):
 
     def tick(self):
         now = time.time()
-        remaining = self.expired - now
-        self.update(remaining)
+        remaining = int(self.expired - now)
         if remaining > 0:
+            self.update(remaining)
             self.after(1000, self.tick)
         else:
+            self.update(0)
             self.running = False
             self.callback()
 
