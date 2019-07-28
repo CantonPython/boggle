@@ -153,6 +153,7 @@ class BoggleApp(tk.Frame):
     def solve(self):
         if not self.running:
             return
+
         self.running = False
         self.button_action.configure(text='Shake!', command=self.shake)
 
@@ -162,10 +163,21 @@ class BoggleApp(tk.Frame):
         found = solution_words & entered_words
         missed = solution_words - entered_words
 
-        found_text = 'Your score %d:\n%s' % (self.score(found), ' '.join(sorted(list(found))))
-        missed_text = 'You missed %d:\n%s' % (self.score(missed), ' '.join(sorted(list(missed))))
+        found_score = self.score(found)
+        found_words = ' '.join(sorted(list(found)))
 
-        self.var_message.set(found_text + '\n\n' + missed_text)
+        missed_score = self.score(missed)
+        missed_words = ' '.join(sorted(list(missed)))
+
+        if (missed_score + found_score) != 0:
+            percent = (found_score / (found_score + missed_score)) * 100.0
+        else:
+            percent = 0.0
+
+        self.var_message.set(
+            'Your score %d (%d%%):\n%s\n\n' \
+            'You missed %d:\n%s\n' % \
+            (found_score, percent, found_words, missed_score, missed_words))
 
     def score(self, words):
         score = 0
