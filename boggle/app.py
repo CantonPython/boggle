@@ -39,6 +39,10 @@ class BoggleTimer(tk.Label):
 
 
 class BoggleApp(tk.Frame):
+
+    # Word score table
+    points = {0:0, 1:0, 2:0, 3:1, 4:1, 5:2, 6:3, 7:5, 8:11}
+
     def __init__(self, root):
         super().__init__(root)
 
@@ -126,7 +130,7 @@ class BoggleApp(tk.Frame):
         self.solution = None
 
     def shake(self):
-        self.button_action.configure(text='Solve', command=self.solve)
+        self.button_action.configure(text='Stop', command=self.solve)
         self.clear()
         self.letters = self.dice.shake()
         self.paint_canvas()
@@ -157,11 +161,16 @@ class BoggleApp(tk.Frame):
         found = solution_words & entered_words
         missed = solution_words - entered_words
 
-        found_text = 'You found:\n' + ' '.join(sorted(list(found)))
-        missed_text = 'You missed:\n' + ' '.join(sorted(list(missed)))
+        found_text = 'Your score %d:\n%s' % (self.score(found), ' '.join(sorted(list(found))))
+        missed_text = 'You missed %d:\n%s' % (self.score(missed), ' '.join(sorted(list(missed))))
 
         self.var_message.set(found_text + '\n\n' + missed_text)
 
+    def score(self, words):
+        score = 0
+        for word in words:
+            score += self.points.get(len(word), 11)
+        return score
 
 def main():
     root = tk.Tk()
