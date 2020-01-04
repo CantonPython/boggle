@@ -42,7 +42,7 @@ class BoggleSolver:
         """Find the word on the board if it exists."""
         first = word[0]
         rest = word[1:]
-        for i in self.index[first]:
+        for i in self.index[first.lower()]:
             found = self.find_subword([i], rest)
             if found:
                 return found
