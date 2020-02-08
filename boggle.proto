@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package boggle;
+
+message Empty {
+}
+
+message Greeting {
+  string greeting = 1;
+}
+
+service Boggle {
+  rpc Example (ExampleRequest) returns (ExampleResponse) {}
+}
+
+service BoggleLobby {
+  rpc GetWelcomeMessage(Empty) returns (Greeting) {}
+  // Create a game
+  // Get List of Games not in progress
+  // Get List of completed games (with score details)
+  // Join a game
+}
+
