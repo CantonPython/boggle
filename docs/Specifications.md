@@ -60,15 +60,15 @@ Unique username (enforced on server)
 ## Endpoints
 
 ### Lobby
-Get Welcome Message
+`Get Welcome Message`
 
-Create a game
+`Create a game`
 
-Get List of Games not in progress
+`Get List of Games not in progress`
 
-Get List of completed games (with score details)
+`Get List of completed games` (with score details)
 
-Join a game
+`Join a game`
 
 
 
@@ -76,16 +76,16 @@ Join a game
 NOTE: all games are created by the lobby and must validate user can access it. All endpoints require username and need to validate it exists and that user is in the game
 
 
-Get Game Details
+`Get Game Details`
 - includes all game details - board, start/end time
 
-Submit Words
+`Submit Words`
 
-Get Game Results
+`Get Game Results`
 
 
 ### Player
-Register
+`Register`
 - user gets a unique ID back. ID is used to validate in game. If user is booted/disconnects, they get new IDs and can't re-enter any game they were in that's in progress. If we need to change this we should validate by username (which could be a different person)
 
 
