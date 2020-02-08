@@ -9,10 +9,6 @@ message Greeting {
   string greeting = 1;
 }
 
-service Boggle {
-  rpc Example (ExampleRequest) returns (ExampleResponse) {}
-}
-
 service BoggleLobby {
   rpc GetWelcomeMessage(Empty) returns (Greeting) {}
   // Create a game
@@ -20,4 +16,3 @@ service BoggleLobby {
   // Get List of completed games (with score details)
   // Join a game
 }
-
