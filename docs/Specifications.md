@@ -57,7 +57,7 @@ Unique username (enforced on server)
 
 
 
-##Endpoints
+## Endpoints
 
 ### Lobby
 Get Welcome Message
