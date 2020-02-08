@@ -1,0 +1,66 @@
+responsibilities of the server:
+- creates game
+- manages game
+    - manages time
+    - manages board
+ 
+
+Lobby
+-------
+user's initial interaction with the server is with the lobby. The user selects a game. Lobby manages the communications with the user:
+    - notifies when game is ready
+        - details need here (time limit to join? max number of players)
+    - notifies who is playing
+
+once game is ready to play, lobby hands of players to game manager
+
+Game Manager
+-------
+generates the board
+sends it to players
+manages the clock
+computes winners
+
+Scoreboard Manager
+-------------
+computes score of game played
+later:
+    - persist all scores for all users to view
+        - high score
+manage/track stats to get insight into players
+    - ex: get players with the most words found, win/loss ratio
+
+
+
+
+models:
+- lobby
+    - games
+        - players
+            
+calculating who the winner is
+
+
+game:
+    - modes
+        - concurrent mode
+        - non-concurrent mode
+
+
+
+responsibilities of the client:
+
+
+
+
+questions:
+who generates the board?
+
+
+todos:
+organize notes
+grpc endpoints
+specs
+
+
+
