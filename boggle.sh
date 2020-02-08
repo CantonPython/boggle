@@ -1,2 +1,2 @@
 #!/bin/sh
-exec python3 -m boggle.app
+exec python3 -m boggle.client.app
