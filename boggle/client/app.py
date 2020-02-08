@@ -3,8 +3,8 @@
 import os
 import time
 import tkinter as tk
-from boggle.dice import BoggleDice
-from boggle.solver import BoggleSolver
+from boggle.shared.dice import BoggleDice
+from boggle.shared.solver import BoggleSolver
 
 class BoggleTimer(tk.Label):
     def __init__(self, parent):
