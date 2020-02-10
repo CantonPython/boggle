@@ -73,29 +73,3 @@ class BoggleSolver:
             if path:
                 self.solution[word] = tuple(path)
         return self.solution
-
-def main():
-    """Test driver for the boggle game solver."""
-
-    from pprint import pprint
-    board = \
-        'catx' \
-        'xxnx' \
-        'xxua' \
-        'xxxx'
-
-    solver = BoggleSolver('boggle_words.txt')
-    solver.build_index(board)
-    print('index')
-    pprint(solver.index)
-
-    path = solver.find_word('cat')
-    print('path')
-    pprint(path)
-
-    solver.solve(board)
-    print('solution')
-    pprint(solver.solution)
-
-if __name__ == '__main__':
-    main()

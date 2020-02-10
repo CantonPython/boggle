@@ -32,11 +32,3 @@ class BoggleDice:
            letter = random.choice(d)
            letters.append(letter)
        return ''.join(letters)
-
-def main():
-    dice = BoggleDice()
-    letters = dice.shake()
-    print(letters)
-
-if __name__ == '__main__':
-    main()
