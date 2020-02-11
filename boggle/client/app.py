@@ -4,6 +4,7 @@ import os
 import time
 import tkinter as tk
 from boggle.shared.dice import BoggleDice
+from boggle.shared.solver import BoggleDictionary
 from boggle.shared.solver import BoggleSolver
 
 class BoggleTimer(tk.Label):
@@ -50,7 +51,8 @@ class BoggleApp(tk.Frame):
         self.rows = 4
         self.cols = 4
         self.dice = BoggleDice()
-        self.solver = BoggleSolver(os.path.expanduser('~/.boggle/words.txt'))
+        self.dictionary = BoggleDictionary(filename=os.path.expanduser('~/.boggle/words.txt'))
+        self.solver = BoggleSolver(self.dictionary)
         self.words = []
         self.letters = []
         self.running = False

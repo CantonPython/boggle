@@ -21,13 +21,46 @@ ADJACENT = {
     15: (10, 11, 14),
 }
 
-class BoggleSolver:
+class BoggleDictionary:
+    """Collection of boggle words."""
 
-    def __init__(self, filename='words.txt'):
-        self.dictionary = []
+    def __init__(self, filename=None):
+        """Initialize an empty word collection."""
+        self.words = set()
+        if filename:
+            self.read(filename)
+
+    def is_valid(self, word):
+        """Return true if the word is composed of letters 'a' to 'z' only."""
+        if not word:
+            return False
+        for letter in word:
+            if not letter in string.ascii_lowercase:
+                return False
+        return True
+
+    def add(self, word):
+        """Add a word to the collection."""
+        word = word.strip().lower()
+        if self.is_valid(word):
+            self.words.add(word)
+
+    def read(self, filename):
+        """Read words from a file consisting of one word per line.
+
+        Accept only words containing letters and store them as lowercase.
+        """
         with open(filename) as f:
             for word in f:
-                self.dictionary.append(word.strip())
+                self.add(word)
+
+
+class BoggleSolver:
+
+    def __init__(self, dictionary=None):
+        if dictionary is None:
+            dictionary = BoggleDictionary()
+        self.dictionary = dictionary
 
     def build_index(self, board):
         """Generate the index table for find_word."""
@@ -67,7 +100,7 @@ class BoggleSolver:
         """Find all the words on the board."""
         self.build_index(board)
         self.solution = {}
-        for word in self.dictionary:
+        for word in self.dictionary.words:
             word = word.strip()
             path = self.find_word(word)
             if path:

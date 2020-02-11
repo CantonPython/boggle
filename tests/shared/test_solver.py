@@ -1,7 +1,6 @@
-import os
-import tempfile
 import unittest
 
+from boggle.shared.solver import BoggleDictionary
 from boggle.shared.solver import BoggleSolver
 
 class TestBoggleSolver(unittest.TestCase):
@@ -14,17 +13,12 @@ class TestBoggleSolver(unittest.TestCase):
         'xxxx'
 
     def setUp(self):
-        f = tempfile.NamedTemporaryFile(delete=False)
-        self.words = f.name
+        self.dictionary = BoggleDictionary()
         for w in ('ant', 'aunt', 'cat', 'zoo'):
-            f.write(bytes(w+'\n', 'ascii'))
-        f.close()
-
-    def tearDown(self):
-        os.remove(self.words)
+            self.dictionary.add(w)
 
     def test_index(self):
-        solver = BoggleSolver(self.words)
+        solver = BoggleSolver(self.dictionary)
         solver.build_index(self.test_board)
         got = solver.index
         expected = {
@@ -58,14 +52,14 @@ class TestBoggleSolver(unittest.TestCase):
         self.assertEqual(got, expected)
 
     def test_find_words(self):
-        solver = BoggleSolver(self.words)
+        solver = BoggleSolver(self.dictionary)
         solver.build_index(self.test_board)
         got = solver.find_word('cat')
         expected = [0, 1, 2]
         self.assertEqual(got, expected)
 
     def test_solve(self):
-        solver = BoggleSolver(self.words)
+        solver = BoggleSolver(self.dictionary)
         solver.solve(self.test_board)
         got = solver.solution
         expected = {
