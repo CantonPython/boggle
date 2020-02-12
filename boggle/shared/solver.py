@@ -75,7 +75,7 @@ class BoggleSolver:
         """Find the word on the board if it exists."""
         first = word[0]
         rest = word[1:]
-        for i in self.index[first.lower()]:
+        for i in self.index[first]:
             found = self.find_subword([i], rest)
             if found:
                 return found
@@ -101,7 +101,6 @@ class BoggleSolver:
         self.build_index(board)
         self.solution = {}
         for word in self.dictionary.words:
-            word = word.strip()
             path = self.find_word(word)
             if path:
                 self.solution[word] = tuple(path)
